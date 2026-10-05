@@ -33,16 +33,15 @@ import { IconButton } from "@/components/xui/icon-button"
 import { useNotification } from "@/hooks/useNotfication"
 import { useServer } from "@/hooks/useServer"
 import { conv } from "@/lib/utils"
-import { asOptionalField } from "@/lib/utils"
 import { ModelService } from "@/types"
 import { serviceCoverageTypes, serviceTypes } from "@/types"
+import { serviceFormSchema } from "@/types/service-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 import { KeyedMutator } from "swr"
-import { z } from "zod"
 
 import { Combobox } from "./ui/combobox"
 import { MultiSelect } from "./xui/multi-select"
@@ -51,28 +50,6 @@ interface ServiceCardProps {
     data?: ModelService
     mutate: KeyedMutator<ModelService[]>
 }
-
-const serviceFormSchema = z.object({
-    cover: z.coerce.number().int().min(0),
-    display_index: z.coerce.number().int(),
-    duration: z.coerce.number().int().min(30),
-    enable_trigger_task: asOptionalField(z.boolean()),
-    hide_for_guest: asOptionalField(z.boolean()),
-    fail_trigger_tasks: z.array(z.number()),
-    fail_trigger_tasks_raw: z.string(),
-    latency_notify: asOptionalField(z.boolean()),
-    max_latency: z.coerce.number().int().min(0),
-    min_latency: z.coerce.number().int().min(0),
-    name: z.string().min(1),
-    notification_group_id: z.coerce.number().int(),
-    notify: asOptionalField(z.boolean()),
-    recover_trigger_tasks: z.array(z.number()),
-    recover_trigger_tasks_raw: z.string(),
-    skip_servers: z.record(z.string(), z.boolean()),
-    skip_servers_raw: z.array(z.string()),
-    target: z.string(),
-    type: z.coerce.number().int().min(0),
-})
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ data, mutate }) => {
     const { t } = useTranslation()
